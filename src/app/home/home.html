@@ -1,0 +1,230 @@
+<div class="farming-page">
+  <aside class="sidebar">
+    <a class="brand" href="/home" aria-label="Smart Farming home">
+      <svg viewBox="0 0 60 60" aria-hidden="true">
+        <path
+          d="M29 55C14 55 4 44 4 30S15 5 29 5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="6"
+          stroke-linecap="round"
+        />
+        <path
+          d="M29 47V27M29 37C17 38 13 31 13 22c11-1 17 4 16 15ZM30 29c0-11 7-17 18-16 1 10-6 17-18 16Z"
+          fill="currentColor"
+        />
+        <path
+          d="M38 5c7 0 14 4 17 10M40 12c4 0 7 2 9 5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+        />
+      </svg>
+      <span>Smart Farming</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <button disabled>
+        <svg viewBox="0 0 24 24">
+          <path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" /></svg
+        >Dashboard
+      </button>
+      <button disabled>
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M12 21V11M12 15C3 15 3 8 3 5c8 0 9 5 9 10ZM12 11c0-7 4-9 9-9 0 6-3 9-9 9Z"
+          /></svg
+        >Environment Monitoring
+      </button>
+      <a href="/home" aria-current="page"
+        ><svg viewBox="0 0 24 24">
+          <path d="M9 8h6v13H9zM12 11v5M5 9a10 10 0 0 1 14 0M2 5a15 15 0 0 1 20 0" /></svg
+        >IoT Sensors</a
+      >
+    </nav>
+  </aside>
+  <header class="topbar">
+    <div class="ai" aria-label="AI assistant">AI<span>✦</span></div>
+    <div class="header-actions">
+      <span class="header-icon" aria-label="Notifications"
+        ><svg viewBox="0 0 24 24">
+          <path d="M6 16V9a6 6 0 0 1 12 0v7l2 2H4l2-2ZM10 21h4" /></svg></span
+      ><span class="header-icon" aria-label="Admin profile"
+        ><svg viewBox="0 0 24 24">
+          <circle cx="12" cy="7" r="3" />
+          <path d="M4 21v-3a8 8 0 0 1 16 0v3" /></svg
+      ></span>
+    </div>
+  </header>
+  <main>
+    <h1 class="sr-only">IoT Sensors</h1>
+    <section class="summary" aria-label="Sensor overview">
+      <article class="summary-frame total">
+        <div class="summary-inner">
+          <h2>Total IOT Sensors</h2>
+          <strong class="total-count">4,832</strong>
+          <div class="pie" role="img" aria-label="4,592 active and 240 inactive sensors"></div>
+          <div class="active-count"><span>Active Sensors</span><strong>4,592</strong></div>
+          <div class="inactive-count"><span>Inactive Sensors</span><strong>240</strong></div>
+        </div>
+      </article>
+      @for (type of categories.slice(1); track type; let i = $index) {
+        <article class="summary-frame category-card">
+          <div class="summary-inner">
+            <svg class="category-art ghost" viewBox="0 0 100 100" aria-hidden="true">
+              <use [attr.href]="i === 0 ? '#plant' : '#weather'" />
+            </svg>
+            <svg class="category-art" viewBox="0 0 100 100" aria-hidden="true">
+              <use [attr.href]="i === 0 ? '#plant' : '#weather'" />
+            </svg>
+            <strong class="category-count">{{ i === 0 ? '2,368' : '2,464' }}</strong>
+            <h2>{{ type }}</h2>
+            <span class="range"><b>198</b><span>–</span>180</span>
+          </div>
+        </article>
+      }
+    </section>
+    <section class="equipment" aria-labelledby="equipment-title">
+      <div class="toolbar">
+        <h2 id="equipment-title">Equipments</h2>
+        <label class="search"
+          ><span class="sr-only">Search by name or ID or IMEI number</span
+          ><input
+            type="search"
+            placeholder="Search by name or ID or IMEI number"
+            [ngModel]="query()"
+            (ngModelChange)="query.set($event)" /><svg viewBox="0 0 24 24">
+            <circle cx="10" cy="10" r="6" />
+            <path d="m15 15 6 6" /></svg
+        ></label>
+        <label class="status-filter"
+          ><span class="sr-only">Filter by status</span
+          ><select
+            aria-label="Filter by status"
+            [ngModel]="status()"
+            (ngModelChange)="status.set($event)"
+          >
+            <option>All</option>
+            <option>Active</option>
+            <option>Inactive</option>
+          </select></label
+        >
+        <button class="add-button" (click)="adding.set(true)">Add Sensor <span>+</span></button>
+      </div>
+      <div class="tabs" aria-label="Sensor categories">
+        @for (type of categories; track type) {
+          <button
+            [class.current]="category() === type"
+            [attr.aria-pressed]="category() === type"
+            (click)="category.set(type)"
+          >
+            {{ type }}
+          </button>
+        }
+      </div>
+      <div class="sensor-grid">
+        @for (sensor of filtered(); track $index) {
+          <button
+            class="sensor-card"
+            (click)="selected.set(sensor)"
+            [attr.aria-label]="
+              sensor.name + ', ' + sensor.id + ', ' + (sensor.active ? 'Active' : 'Inactive')
+            "
+          >
+            <span class="sensor-inner"
+              ><span class="sensor-icon"
+                ><svg viewBox="0 0 24 24"><path [attr.d]="icon(sensor.name)" /></svg
+              ></span>
+              <span class="sensor-info"
+                ><strong>{{ sensor.name }}</strong
+                ><span>Asset ID: {{ sensor.id }}</span
+                ><span class="badge" [class.inactive]="!sensor.active">{{
+                  sensor.active ? 'Active' : 'Inactive'
+                }}</span></span
+              >
+              <span class="chevrons" aria-hidden="true">»</span>
+            </span>
+          </button>
+        } @empty {
+          <p class="empty">No sensors match your search.</p>
+        }
+      </div>
+    </section>
+  </main>
+</div>
+<svg class="svg-defs" aria-hidden="true">
+  <defs>
+    <linearGradient id="green">
+      <stop stop-color="#4fb063" />
+      <stop offset="1" stop-color="#84e498" />
+    </linearGradient>
+    <g id="plant" fill="url(#green)">
+      <path
+        d="M47 80V22h6v58ZM47 42C18 42 14 24 15 13c24 0 33 12 32 29ZM53 33C53 10 71 7 86 9c0 18-12 26-33 24ZM47 66C21 67 11 55 12 43c23-3 34 9 35 23ZM53 57c0-21 18-25 33-23-1 17-11 24-33 23ZM48 91C28 96 9 87 4 76c18-9 36-4 44 9ZM52 91c20 5 39-4 44-15-18-9-36-4-44 9Z"
+      />
+    </g>
+    <g id="weather" stroke="url(#green)" stroke-width="5" fill="none">
+      <circle cx="39" cy="37" r="24" />
+      <ellipse cx="39" cy="37" rx="11" ry="24" />
+      <path d="M15 37h48M20 23h38M20 51h28M39 6V0M7 37H0M15 12 8 5M67 12l7-7M13 65l-7 7" />
+      <path
+        d="M47 83h34a13 13 0 0 0 0-26 19 19 0 0 0-36 4 11 11 0 0 0 2 22Z"
+        fill="url(#green)"
+        stroke="none"
+      />
+    </g>
+  </defs>
+</svg>
+@if (adding() || selected()) {
+  <div class="modal-backdrop" (click)="adding.set(false); selected.set(null)">
+    <section
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      (click)="$event.stopPropagation()"
+      (keydown.escape)="adding.set(false); selected.set(null)"
+    >
+      <button
+        class="close"
+        aria-label="Close dialog"
+        (click)="adding.set(false); selected.set(null)"
+      >
+        ×
+      </button>
+      @if (adding()) {
+        <h2 id="modal-title">Add Sensor</h2>
+        <p>Add a sensor to this session’s equipment list.</p>
+        <form (submit)="add($event)">
+          <label>Sensor name<input name="name" required /></label
+          ><label>Asset ID<input name="id" required /></label
+          ><label
+            >IMEI number<input
+              name="imei"
+              required
+              pattern="[0-9]{15}"
+              inputmode="numeric"
+              maxlength="15" /></label
+          ><label
+            >Category<select name="category">
+              <option>Soil Data Sensors</option>
+              <option>Weather Monitoring Sensors</option>
+            </select></label
+          ><button class="add-button" type="submit">Add Sensor <span>+</span></button>
+        </form>
+      }
+      @if (selected(); as sensor) {
+        <h2 id="modal-title">{{ sensor.name }}</h2>
+        <dl>
+          <dt>Asset ID</dt>
+          <dd>{{ sensor.id }}</dd>
+          <dt>IMEI number</dt>
+          <dd>{{ sensor.imei }}</dd>
+          <dt>Category</dt>
+          <dd>{{ sensor.category }}</dd>
+          <dt>Status</dt>
+          <dd>{{ sensor.active ? 'Active' : 'Inactive' }}</dd>
+        </dl>
+      }
+    </section>
+  </div>
+}
