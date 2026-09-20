@@ -34,11 +34,12 @@ select:focus-visible {
   position: relative;
 }
 .sidebar {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 260px;
-  min-height: 832px;
+  height: 100dvh;
+  overflow-y: auto;
   background: linear-gradient(90deg, #cfe9d5, transparent);
   z-index: 2;
 }
@@ -95,12 +96,11 @@ nav a {
   margin-left: 260px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding-right: 20px;
   background: linear-gradient(90deg, #deece5e6, #eef7f0e6);
   
 }
-.ai{padding:15px;border-radius:50%;background:#f1e5fc;color:#9747ff}
 
 
 
@@ -520,9 +520,11 @@ dd {
 }
 @media (max-width: 640px) {
   .sidebar {
-    position: relative;
+    position: sticky;
     width: 100%;
-    min-height: 0;
+    height: auto;
+    max-height: 100dvh;
+    background: #cfe9d5;
   }
   .brand {
     height: 76px;
