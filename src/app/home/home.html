@@ -95,18 +95,6 @@
             <circle cx="10" cy="10" r="6" />
             <path d="m15 15 6 6" /></svg
         ></label>
-        <label class="status-filter"
-          ><span class="sr-only">Filter by status</span
-          ><select
-            aria-label="Filter by status"
-            [ngModel]="status()"
-            (ngModelChange)="status.set($event)"
-          >
-            <option>All</option>
-            <option>Active</option>
-            <option>Inactive</option>
-          </select></label
-        >
         <button class="add-button" (click)="adding.set(true)">Add Sensor <span>+</span></button>
       </div>
       <div class="tabs" aria-label="Sensor categories">
