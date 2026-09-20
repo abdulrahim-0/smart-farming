@@ -603,4 +603,5 @@ dd {
 .profile-icon svg{position:absolute;left:50%;stroke:none;transform:translateX(-50%)}
 .profile-head{top:14px;width:10px;height:10px}
 .profile-body{top:23px;width:18px;height:9px}
-.category-art.ghost{display:none}
+.category-art.plant-art{height:78px}
+.category-art.weather-art{height:73px}
