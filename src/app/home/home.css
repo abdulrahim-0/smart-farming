@@ -598,4 +598,12 @@ dd {
   }
 }
 
-.brand svg{width:47px;height:47px}.header-icon{padding:12px}.category-art.ghost{display:none}
+.brand svg{width:47px;height:47px}
+.header-actions{display:flex;align-items:center;gap:10px}
+.header-icon{display:grid;place-items:center;width:46px;height:46px;padding:0;background:linear-gradient(48.81deg,rgba(63,70,64,.1) 19.53%,rgba(63,70,64,0) 72.27%);border-radius:30px}
+.notification-icon{width:14px;height:19px;stroke:none}
+.profile-icon{position:relative}
+.profile-icon svg{position:absolute;left:50%;stroke:none;transform:translateX(-50%)}
+.profile-head{top:14px;width:10px;height:10px}
+.profile-body{top:23px;width:18px;height:9px}
+.category-art.ghost{display:none}
