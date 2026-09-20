@@ -89,8 +89,13 @@ form {
     border-color 0.15s,
     box-shadow 0.15s;
 }
+.text-field:hover {
+  border-color: #8cc995;
+  background: #fbfefb;
+}
 .text-field:focus-within {
   border-color: #4fb063;
+  background: #f5fbf6;
   box-shadow: 0 0 0 3px #4fb06320;
 }
 .field-icon {
@@ -146,6 +151,12 @@ button {
 .password-toggle:hover {
   background: #f1f8f2;
   color: #3f4640;
+}
+.password-toggle:active,
+.password-toggle[aria-pressed='true'] {
+  background: #dff1e2;
+  color: #287b39;
+  transform: scale(0.94);
 }
 .login-button {
   position: relative;
