@@ -167,9 +167,6 @@ h2 {
   top: 30px;
   width: 89px;
   height: 89px;
-  border-radius: 50%;
-  background: conic-gradient(from 18deg, #82e295 0%, #4fb063 95%, #3f4640 95%);
-  box-shadow: 0 10px 15px #4fb0634d;
 }
 .active-count,
 .inactive-count {
