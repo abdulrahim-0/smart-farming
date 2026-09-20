@@ -73,15 +73,20 @@ nav a {
   color: #3f4640;
   font-size: 14px;
   text-align: left;
+  transition: color 200ms ease-in, background 200ms ease-in;
 }
 nav svg {
   width: 30px;
   height: 30px;
   flex-shrink: 0;
 }
-nav button:disabled {
-  cursor: default;
-  opacity: 0.65;
+nav button:not(:disabled):hover,
+nav button:not(:disabled):focus-visible,
+
+nav a:hover {
+  color: #4fb063;
+  background: linear-gradient(90deg, #4fb0634d, transparent 80%);
+
 }
 nav a {
   font-weight: 700;
