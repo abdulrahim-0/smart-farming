@@ -166,24 +166,43 @@ button {
   background: #4fb063;
   color: white;
   font-weight: 700;
-  box-shadow: 0 8px 30px #4fb06380;
-  transition: background 0.15s;
+  box-shadow: 0 8px 30px rgba(79, 176, 99, 0);
+  transition:
+    background-color 300ms ease-out,
+    box-shadow 300ms ease-out;
 }
 .login-button:hover {
-  background: #419c54;
+  background: #4fb063;
+  box-shadow: 0 8px 30px rgba(79, 176, 99, 0.5);
 }
 .button-arrow {
   position: absolute;
   right: 10px;
-  top: 9px;
+  top: calc(50% - 42px / 2);
   width: 42px;
   height: 42px;
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: linear-gradient(270deg, #ffffff26, #ffffff0d);
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  transition:
+    right 300ms ease-out,
+    top 300ms ease-out,
+    width 300ms ease-out,
+    height 300ms ease-out,
+    border-radius 300ms ease-out;
+}
+.login-button:hover .button-arrow {
+  right: 3px;
+  top: 3px;
+  width: calc(100% - 6px);
+  height: 54px;
+  border-radius: 17px;
 }
 .button-arrow svg {
+  position: absolute;
+  right: 11px;
+  top: calc(50% - 12px);
   width: 20px;
 }
 .forgot-password {
