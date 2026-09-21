@@ -50,6 +50,42 @@
   flex-shrink: 0;
   width: 20px;
 }
+.filter-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  border-radius: 30px;
+  background: none;
+}
+.filter-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(48.81deg, rgba(63, 70, 64, 0.25) 19.53%, rgba(63, 70, 64, 0) 72.27%);
+  opacity: 0.4;
+  transition: opacity 300ms ease-out;
+  pointer-events: none;
+}
+.filter-button:hover::before,
+.filter-button:focus-visible::before {
+  opacity: 1;
+}
+.filter-button img {
+  position: relative;
+  width: 19px;
+  height: 19px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .filter-button::before {
+    transition: none;
+  }
+}
 .add-button {
   display: flex;
   align-items: center;
