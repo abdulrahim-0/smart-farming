@@ -271,6 +271,20 @@ h2 {
   border-radius: 30px;
   padding: 0 18px;
   height: 46px;
+  transition:
+    background-color 300ms ease-out,
+    border-color 300ms ease-out,
+    border-width 300ms ease-out,
+    padding 300ms ease-out;
+}
+.search:hover {
+  background: #ffffff;
+  border: 1.5px solid #91c89c;
+}
+.search:focus-within {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid #4fb063;
+  padding: 0 17.5px;
 }
 .search input {
   width: 100%;
@@ -332,17 +346,55 @@ h2 {
   overflow: hidden;
 }
 .tabs button {
+  position: relative;
+  isolation: isolate;
   padding: 10px 20px;
   border: 0;
-  background: linear-gradient(0deg, #ffffff99, #ffffff33);
+  border-radius: 0;
+  background: transparent;
   color: #3f4640;
   font-weight: 600;
   min-height: 40px;
 }
 .tabs button.current {
   color: #259b3d;
-  background: linear-gradient(0deg, #4fb06399, #4fb0631a);
   font-weight: 800;
+}
+.tabs button::before,
+.tabs button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity 600ms ease;
+}
+.tabs button::before {
+  background: linear-gradient(0deg, #ffffff99, #ffffff33);
+}
+.tabs button.current::before {
+  background: linear-gradient(0deg, #4fb06399, #4fb0631a);
+}
+.tabs button::after {
+  opacity: 0;
+  background: linear-gradient(
+    0deg,
+    rgba(79, 176, 99, 0.3) 0%,
+    rgba(79, 176, 99, 0.15) 40.87%,
+    rgba(79, 176, 99, 0) 100%
+  );
+}
+.tabs button:hover::before {
+  opacity: 0;
+}
+.tabs button:hover::after {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tabs button::before,
+  .tabs button::after {
+    transition: none;
+  }
 }
 .sensor-grid {
   display: grid;
