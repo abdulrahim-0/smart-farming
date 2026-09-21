@@ -193,6 +193,26 @@ h2 {
 .active-count strong {
   color: #4fb063;
 }
+.plant-art-blurred {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  width: 140px;
+  height: 154px;
+  pointer-events: none;
+  filter: blur(5px);
+}
+
+.weather-art-background {
+  position: absolute;
+  width: 122px;
+  height: 124.55px;
+  left: calc(50% - 122px / 2 + 59.5px);
+  top: calc(50% - 124.55px / 2 - 63.73px);
+  pointer-events: none;
+  filter: blur(5px);
+}
+
 .category-art {
   position: absolute;
   top: 28px;
