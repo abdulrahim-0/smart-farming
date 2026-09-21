@@ -1,0 +1,56 @@
+<section class="equipment" aria-labelledby="equipment-title">
+  <div class="toolbar">
+    <h2 id="equipment-title">Equipments</h2>
+    <label class="search"
+      ><span class="sr-only">Search by name or ID or IMEI number</span
+      ><input
+        type="search"
+        placeholder="Search by name or ID or IMEI number"
+        [ngModel]="query()"
+        (ngModelChange)="query.set($event)" /><svg viewBox="0 0 24 24">
+        <circle cx="10" cy="10" r="6" />
+        <path d="m15 15 6 6" /></svg
+    ></label>
+    <button class="add-button" (click)="addRequested.emit()">Add Sensor <span>+</span></button>
+  </div>
+  <div class="tabs" aria-label="Sensor categories">
+    @for (type of categories(); track type) {
+      <button
+        [class.current]="category() === type"
+        [class.soil-tab]="type === 'Soil Data Sensors'"
+        [attr.aria-pressed]="category() === type"
+        (click)="category.set(type)"
+      >
+        {{ type }}
+      </button>
+    }
+  </div>
+  <div class="sensor-grid">
+    @for (sensor of sensors(); track $index) {
+      <button
+        class="sensor-card"
+        (click)="sensorSelected.emit(sensor)"
+        [attr.aria-label]="
+          sensor.name + ', ' + sensor.id + ', ' + (sensor.active ? 'Active' : 'Inactive')
+        "
+      >
+        <span class="sensor-inner"
+          ><span class="sensor-icon"
+            ><svg viewBox="0 0 24 24">
+              <path [attr.d]="icon(sensor.name)" /></svg
+          ></span>
+          <span class="sensor-info"
+            ><strong>{{ sensor.name }}</strong
+            ><span>Asset ID: {{ sensor.id }}</span
+            ><span class="badge" [class.inactive]="!sensor.active">{{
+              sensor.active ? 'Active' : 'Inactive'
+            }}</span></span
+          >
+          <span class="chevrons" aria-hidden="true">»</span>
+        </span>
+      </button>
+    } @empty {
+      <p class="empty">No sensors match your search.</p>
+    }
+  </div>
+</section>

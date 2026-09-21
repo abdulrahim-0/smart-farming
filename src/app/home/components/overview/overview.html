@@ -1,0 +1,56 @@
+<section class="summary" aria-label="Sensor overview">
+  <article class="summary-frame total">
+    <div class="summary-inner">
+      <h2>Total IOT Sensors</h2>
+      <strong class="total-count">4,832</strong>
+      <div
+        #sensorChart
+        class="pie"
+        role="img"
+        aria-label="4,592 active and 240 inactive sensors"
+      ></div>
+      <div class="active-count"><span>Active Sensors</span><strong>4,592</strong></div>
+      <div class="inactive-count"><span>Inactive Sensors</span><strong>240</strong></div>
+    </div>
+  </article>
+  @for (type of categories().slice(1); track type; let i = $index) {
+    <article class="summary-frame category-card">
+      <div class="summary-inner">
+        @if (i === 0) {
+          <img
+            class="plant-art-blurred"
+            src="soil-data-sensors-blurred.svg"
+            width="140"
+            height="154"
+            alt=""
+          />
+          <img
+            class="category-art plant-art"
+            src="soil-data-sensors.svg"
+            width="70"
+            height="78"
+            alt=""
+          />
+        } @else {
+          <img
+            class="weather-art-background"
+            src="weather-monitoring-sensors-background.svg"
+            width="122"
+            height="125"
+            alt=""
+          />
+          <img
+            class="category-art weather-art"
+            src="weather-monitoring-sensors.svg"
+            width="70"
+            height="73"
+            alt=""
+          />
+        }
+        <strong class="category-count">{{ i === 0 ? '2,368' : '2,464' }}</strong>
+        <h2>{{ type }}</h2>
+        <span class="range"><b>198</b><span>–</span>180</span>
+      </div>
+    </article>
+  }
+</section>

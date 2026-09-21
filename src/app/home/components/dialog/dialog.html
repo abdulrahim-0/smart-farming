@@ -1,0 +1,48 @@
+@if (adding() || selected()) {
+  <div class="modal-backdrop" (click)="closed.emit()">
+    <section
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      (click)="$event.stopPropagation()"
+      (keydown.escape)="closed.emit()"
+    >
+      <button class="close" aria-label="Close dialog" (click)="closed.emit()">×</button>
+      @if (adding()) {
+        <h2 id="modal-title">Add Sensor</h2>
+        <p>Add a sensor to this session’s equipment list.</p>
+        <form (submit)="submitted.emit($event)">
+          <label>Sensor name<input name="name" required /></label
+          ><label>Asset ID<input name="id" required /></label
+          ><label
+            >IMEI number<input
+              name="imei"
+              required
+              pattern="[0-9]{15}"
+              inputmode="numeric"
+              maxlength="15" /></label
+          ><label
+            >Category<select name="category">
+              <option>Soil Data Sensors</option>
+              <option>Weather Monitoring Sensors</option>
+            </select></label
+          ><button class="add-button" type="submit">Add Sensor <span>+</span></button>
+        </form>
+      }
+      @if (selected(); as sensor) {
+        <h2 id="modal-title">{{ sensor.name }}</h2>
+        <dl>
+          <dt>Asset ID</dt>
+          <dd>{{ sensor.id }}</dd>
+          <dt>IMEI number</dt>
+          <dd>{{ sensor.imei }}</dd>
+          <dt>Category</dt>
+          <dd>{{ sensor.category }}</dd>
+          <dt>Status</dt>
+          <dd>{{ sensor.active ? 'Active' : 'Inactive' }}</dd>
+        </dl>
+      }
+    </section>
+  </div>
+}

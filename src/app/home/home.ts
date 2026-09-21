@@ -1,45 +1,18 @@
-import { afterNextRender, Component, computed, DestroyRef, ElementRef, inject, signal, viewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { PieChart } from 'echarts/charts';
-import { init, use } from 'echarts/core';
-import { SVGRenderer } from 'echarts/renderers';
-
-use([PieChart, SVGRenderer]);
+import { Component, computed, signal } from '@angular/core';
+import { Sensor } from './sensor';
+import { HomeSidebar } from './components/sidebar/sidebar';
+import { HomeHeader } from './components/header/header';
+import { SensorOverview } from './components/overview/overview';
+import { SensorEquipment } from './components/equipment/equipment';
+import { SensorDialog } from './components/dialog/dialog';
 
 @Component({
   selector: 'app-home',
-  imports: [FormsModule],
+  imports: [HomeSidebar, HomeHeader, SensorOverview, SensorEquipment, SensorDialog],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrls: ['./home-shared.css', './home.css'],
 })
 export class Home {
-  private readonly sensorChart = viewChild.required<ElementRef<HTMLDivElement>>('sensorChart');
-  private readonly destroyRef = inject(DestroyRef);
-
-  constructor() {
-    afterNextRender(() => {
-      const chart = init(this.sensorChart().nativeElement, undefined, {
-        renderer: 'svg',
-        width: 89,
-        height: 89,
-      });
-      chart.setOption({
-        series: [{
-          type: 'pie',
-          radius: ['60%', '95%'],
-          label: { show: false },
-          labelLine: { show: false },
-          emphasis: { scale: false, label: { show: false } },
-          data: [
-            { value: 4592, name: 'Active', itemStyle: { color: '#4fb063' } },
-            { value: 240, name: 'Inactive', itemStyle: { color: '#3f4640' } },
-          ],
-        }],
-      });
-      this.destroyRef.onDestroy(() => chart.dispose());
-    });
-  }
-
   protected readonly query = signal('');
   protected readonly category = signal('All');
   protected readonly status = signal('All');
@@ -93,12 +66,6 @@ export class Home {
           .includes(this.query().toLowerCase().trim()),
     ),
   );
-  protected icon(name: string): string {
-    if (name.includes('Temperature')) return 'M10 14.5V5a2 2 0 0 1 4 0v9.5a4 4 0 1 1-4 0ZM12 9v9';
-    if (name.includes('Wind')) return 'M3 8h13a3 3 0 1 0-3-3M3 12h17M3 16h11a3 3 0 1 1-3 3';
-    if (name.includes('Pressure')) return 'M4 16a9 9 0 1 1 16 0H4ZM12 13l4-5M12 18v3M8 21h8';
-    return 'M12 3S5 11 5 15a7 7 0 0 0 14 0c0-4-7-12-7-12ZM9 15a3 3 0 0 0 3 3';
-  }
   protected add(event: Event): void {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
@@ -118,11 +85,4 @@ export class Home {
     this.status.set('All');
     this.adding.set(false);
   }
-}
-interface Sensor {
-  id: string;
-  imei: string;
-  name: string;
-  category: string;
-  active: boolean;
 }
