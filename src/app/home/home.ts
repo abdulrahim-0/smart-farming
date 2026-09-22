@@ -1,4 +1,5 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, OnInit , inject} from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Sensor } from './sensor';
 import { HomeSidebar } from './components/sidebar/sidebar';
 import { HomeHeader } from './components/header/header';
@@ -13,6 +14,21 @@ import { SensorDialog } from './components/dialog/dialog';
   styleUrls: ['./home-shared.css', './home.css'],
 })
 export class Home {
+  http = inject(HttpClient);
+  headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+  });
+  constructor() {
+    this.http.get('http://51.222.143.153:5065/sensors/list?metricsID=All&parkID=2&row=9&page=1&categorymetricsID=1&categorymetricsID=2&search=&fullData=true', { headers: this.headers }).subscribe({
+    next: (response: any) => {
+      console.log('Sensors fetched successfully:', response);
+    },
+    error: (error) => {
+      console.error('Failed to fetch sensors:', error);
+    }
+  });
+  }
   protected readonly query = signal('');
   protected readonly category = signal('All');
   protected readonly status = signal('All');
