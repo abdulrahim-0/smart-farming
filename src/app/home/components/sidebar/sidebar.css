@@ -117,7 +117,9 @@ nav a {
     border-bottom: 3px solid #4fb063;
   }
 }
-.brand svg {
-  width: 47px;
-  height: 47px;
+.brand img {
+  display: block;
+  width: 185px;
+  max-width: 100%;
+  height: auto;
 }
