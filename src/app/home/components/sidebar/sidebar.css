@@ -1,15 +1,18 @@
 .sidebar {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 260px;
-  height: 100dvh;
+  height: 832px;
   overflow-y: auto;
-  background: linear-gradient(90deg, #cfe9d5, transparent);
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #cfe9d5 100%);
+  background-size: 100% calc(100% - 90px);
+  background-position: bottom;
+  background-repeat: no-repeat;
   z-index: 2;
 }
 .brand {
-  height: 102px;
+  height: 90px;
   padding: 20px;
   display: flex;
   align-items: center;
@@ -84,10 +87,12 @@ nav a {
     width: 100%;
     height: auto;
     max-height: 100dvh;
-    background: #cfe9d5;
+    background: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #cfe9d5 100%);
   }
   .brand {
     height: 76px;
+    background: var(--header-background);
+    backdrop-filter: blur(15px);
   }
   .sidebar nav {
     padding: 0;

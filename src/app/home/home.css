@@ -1,6 +1,11 @@
 :host {
   display: block;
   color: #3f4640;
+  --header-background: linear-gradient(
+    90deg,
+    rgba(222, 236, 229, 0.9) 0%,
+    rgba(238, 247, 240, 0.9) 100%
+  );
 }
 .farming-page {
   min-height: 2023px;
