@@ -44,8 +44,8 @@
   position: absolute;
   right: 20px;
   top: 30px;
-  width: 89px;
-  height: 89px;
+  width: 117px;
+  height: 117px;
 }
 .active-count,
 .inactive-count {
@@ -137,8 +137,6 @@
     min-height: 270px;
   }
   .pie {
-    width: 89px;
-    height: 89px;
     top: 25px;
     right: 30px;
   }

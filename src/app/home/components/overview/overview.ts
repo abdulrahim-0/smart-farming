@@ -29,8 +29,8 @@ export class SensorOverview {
     afterNextRender(() => {
       const chart = init(this.sensorChart().nativeElement, undefined, {
         renderer: 'svg',
-        width: 89,
-        height: 89,
+        width: 117,
+        height: 117,
       });
       chart.setOption({
         series: [
