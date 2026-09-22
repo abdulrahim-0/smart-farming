@@ -1,25 +1,53 @@
+import { vi } from 'vitest';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Home } from './home';
 
 describe('Home interactions', () => {
+  beforeEach(() => {
+    vi.stubGlobal('localStorage', { getItem: () => null });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
+  });
+
+  afterEach(() => {
+    TestBed.inject(HttpTestingController).verify();
+    vi.unstubAllGlobals();
+  });
+
+  function respondWithSensors() {
+    TestBed.inject(HttpTestingController).expectOne(
+      (request) => request.url.includes('/sensors/list'),
+    ).flush({
+      success: true,
+      data: [
+        { sensorID: '24854', IMEI: null, name: 'DL-TRS12 LORAWAN', categorymetricsID: 1, isOn: false, status: '1' },
+        { sensorID: '24803', IMEI: '12345', name: 'DL-SHT35 LORAWAN', categorymetricsID: 2, isOn: true, status: '1' },
+      ],
+    });
+  }
+
   it('filters sensors and opens and closes sensor details', async () => {
     const fixture = TestBed.createComponent(Home);
+    respondWithSensors();
     await fixture.whenStable();
     const page = fixture.nativeElement as HTMLElement;
-    expect(page.querySelectorAll('.sensor-card').length).toBe(27);
+    expect(page.querySelectorAll('.sensor-card').length).toBe(2);
 
     page.querySelector<HTMLButtonElement>('.soil-tab')!.click();
     await fixture.whenStable();
-    expect(page.querySelectorAll('.sensor-card').length).toBe(18);
+    expect(page.querySelectorAll('.sensor-card').length).toBe(1);
 
     const search = page.querySelector<HTMLInputElement>('input[type="search"]')!;
-    search.value = ' AU28607 ';
+    search.value = ' 24854 ';
     search.dispatchEvent(new Event('input'));
     await fixture.whenStable();
     expect(page.querySelectorAll('.sensor-card').length).toBe(1);
     page.querySelector<HTMLButtonElement>('.sensor-card')!.click();
     await fixture.whenStable();
-    expect(page.querySelector('[role="dialog"]')?.textContent).toContain('AU28607');
+    expect(page.querySelector('[role="dialog"]')?.textContent).toContain('24854');
     expect(page.querySelector('[role="dialog"]')?.textContent).toContain('Inactive');
     page.querySelector<HTMLButtonElement>('.close')!.click();
     await fixture.whenStable();
@@ -33,6 +61,7 @@ describe('Home interactions', () => {
 
   it('adds a sensor and resets filters through the dialog', async () => {
     const fixture = TestBed.createComponent(Home);
+    respondWithSensors();
     await fixture.whenStable();
     const page = fixture.nativeElement as HTMLElement;
     page.querySelector<HTMLButtonElement>('.soil-tab')!.click();
@@ -53,7 +82,7 @@ describe('Home interactions', () => {
     form.requestSubmit();
     await fixture.whenStable();
     expect(page.querySelector('[role="dialog"]')).toBeNull();
-    expect(page.querySelectorAll('.sensor-card').length).toBe(28);
+    expect(page.querySelectorAll('.sensor-card').length).toBe(3);
     expect(search.value).toBe('');
     expect(page.querySelector('.tabs .current')?.textContent?.trim()).toBe('All');
     expect(page.querySelector('.sensor-grid')?.textContent).toContain('New weather sensor');

@@ -1,4 +1,4 @@
-import { Component, computed, signal, OnInit , inject} from '@angular/core';
+import { Component, computed, signal, inject} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Sensor } from './sensor';
 import { HomeSidebar } from './components/sidebar/sidebar';
@@ -22,7 +22,19 @@ export class Home {
   constructor() {
     this.http.get('http://51.222.143.153:5065/sensors/list?metricsID=All&parkID=2&row=9&page=1&categorymetricsID=1&categorymetricsID=2&search=&fullData=true', { headers: this.headers }).subscribe({
     next: (response: any) => {
-      console.log('Sensors fetched successfully:', response);
+      this.sensors.set(response.data.map((sensor: {
+        sensorID: string;
+        IMEI: string | null;
+        name: string;
+        categorymetricsID: number;
+        isOn: boolean;
+      }) => ({
+        id: sensor.sensorID,
+        imei: sensor.IMEI ?? '',
+        name: sensor.name,
+        category: sensor.categorymetricsID === 1 ? 'Soil Data Sensors' : 'Weather Monitoring Sensors',
+        active: sensor.isOn,
+      })));
     },
     error: (error) => {
       console.error('Failed to fetch sensors:', error);
@@ -35,43 +47,7 @@ export class Home {
   protected readonly adding = signal(false);
   protected readonly selected = signal<Sensor | null>(null);
   protected readonly categories = ['All', 'Soil Data Sensors', 'Weather Monitoring Sensors'];
-  protected readonly sensors = signal<Sensor[]>(
-    Array.from({ length: 27 }, (_, i) => ({
-      id: `AU${28600 + i}`,
-      imei: `8642000000${String(i + 1).padStart(5, '0')}`,
-      name: [
-        'BI - Temperature',
-        'BI - Temperature',
-        'BI - Humidity',
-        'BI - Temperature',
-        'BI - Moisture',
-        'BI - Wind Speed',
-        'BI - Temperature',
-        'BI - Temperature',
-        'BI - Humidity',
-        'BI - Humidity',
-        'BI - Pressure',
-        'BI - Humidity',
-        'BI - Temperature',
-        'BI - Moisture',
-        'BI - Wind Speed',
-        'BI - Pressure',
-        'BI - Temperature',
-        'BI - Humidity',
-        'BI - Rainfall',
-        'BI - Moisture',
-        'BI - Wind Speed',
-        'BI - Temperature',
-        'BI - Moisture',
-        'BI - Wind Speed',
-        'BI - Humidity',
-        'BI - Pressure',
-        'BI - Humidity',
-      ][i],
-      category: i % 3 === 0 || i % 3 === 1 ? 'Soil Data Sensors' : 'Weather Monitoring Sensors',
-      active: ![7, 14, 23].includes(i),
-    })),
-  );
+  protected readonly sensors = signal<Sensor[]>([]);
   protected readonly filtered = computed(() =>
     this.sensors().filter(
       (sensor) =>
