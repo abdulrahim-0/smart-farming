@@ -1,6 +1,12 @@
 .equipment {
   margin-top: 30px;
 }
+mat-paginator {
+  margin-top: 20px;
+  border-radius: 20px;
+  --mat-paginator-container-background-color: transparent;
+  --mat-paginator-container-text-font: 'Public Sans', Arial, sans-serif;
+}
 .toolbar {
   display: flex;
   align-items: center;
@@ -182,7 +188,11 @@
   height: 142px;
   border: 1.5px solid white;
   border-radius: 28px;
-  background: linear-gradient(263.06deg, rgba(255, 255, 255, 0) 5.18%, rgba(255, 255, 255, 0.1) 93.45%);
+  background: linear-gradient(
+    263.06deg,
+    rgba(255, 255, 255, 0) 5.18%,
+    rgba(255, 255, 255, 0.1) 93.45%
+  );
   text-align: left;
   color: #000513;
   min-width: 0;

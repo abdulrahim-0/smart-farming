@@ -8,7 +8,7 @@
   );
 }
 .farming-page {
-  min-height: 2023px;
+  min-height: 100vh;
   background:
     radial-gradient(ellipse 950px 850px at 30% 13%, #4fb06355, transparent 85%),
     linear-gradient(#eaf4ed, #f4f8f4 65%, #fff);

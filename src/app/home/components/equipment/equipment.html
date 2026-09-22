@@ -29,7 +29,7 @@
     }
   </div>
   <div class="sensor-grid">
-    @for (sensor of sensors(); track $index) {
+    @for (sensor of pagedSensors(); track $index) {
       <button
         class="sensor-card"
         (click)="sensorSelected.emit(sensor)"
@@ -56,4 +56,13 @@
       <p class="empty">No sensors match your search.</p>
     }
   </div>
+  <mat-paginator
+    aria-label="Sensor pagination"
+    [length]="sensors().length"
+    [pageIndex]="pageIndex()"
+    [pageSize]="pageSize()"
+    [pageSizeOptions]="[9, 18, 27]"
+    [showFirstLastButtons]="true"
+    (page)="changePage($event)"
+  />
 </section>

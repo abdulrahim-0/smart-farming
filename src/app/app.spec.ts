@@ -36,7 +36,7 @@ describe('App', () => {
     expect(disabledNavigation.length).toBe(2);
     expect(disabledNavigation[0].textContent).toContain('Dashboard');
     expect(disabledNavigation[1].textContent).toContain('Environment Monitoring');
-    expect(compiled.querySelectorAll('.sensor-card').length).toBe(27);
+    expect(compiled.querySelectorAll('.sensor-card').length).toBe(9);
     const search = compiled.querySelector<HTMLInputElement>('input[type="search"]')!;
     search.value = 'AU28607';
     search.dispatchEvent(new Event('input'));
