@@ -12,6 +12,7 @@ export class Login {
   private readonly http = inject(HttpClient);
   protected readonly passwordVisible = signal(false);
   protected readonly message = signal('');
+  token : string | null = null;
 
   protected togglePasswordVisibility(): void {
     this.passwordVisible.update((visible) => !visible);
@@ -34,6 +35,8 @@ export class Login {
     this.http.post('http://51.222.143.153:5065/users/login', credentials).subscribe({
       next: (response: any) => {
         console.log('Login successful:', response);
+        this.token = response.token;
+        localStorage.setItem('token', response.token);
         this.router.navigateByUrl('/home');
       },
       error: (error) => {
