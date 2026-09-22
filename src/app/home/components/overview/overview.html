@@ -2,15 +2,15 @@
   <article class="summary-frame total">
     <div class="summary-inner">
       <h2>Total IOT Sensors</h2>
-      <strong class="total-count">4,832</strong>
+      <strong class="total-count">{{ summary().total | number }}</strong>
       <div
         #sensorChart
         class="pie"
         role="img"
-        aria-label="4,592 active and 240 inactive sensors"
+        [attr.aria-label]="summary().active + ' active and ' + summary().inactive + ' inactive sensors'"
       ></div>
-      <div class="active-count"><span>Active Sensors</span><strong>4,592</strong></div>
-      <div class="inactive-count"><span>Inactive Sensors</span><strong>240</strong></div>
+      <div class="active-count"><span>Active Sensors</span><strong>{{ summary().active | number }}</strong></div>
+      <div class="inactive-count"><span>Inactive Sensors</span><strong>{{ summary().inactive | number }}</strong></div>
     </div>
   </article>
   @for (type of categories().slice(1); track type; let i = $index) {
@@ -47,9 +47,9 @@
             alt=""
           />
         }
-        <strong class="category-count">{{ i === 0 ? '2,368' : '2,464' }}</strong>
+        <strong class="category-count">{{ (i === 0 ? summary().soil : summary().weather) | number }}</strong>
         <h2>{{ type }}</h2>
-        <span class="range"><b>198</b><span>–</span>180</span>
+        <span class="range"><b>{{ (i === 0 ? summary().soilActive : summary().weatherActive) | number }}</b><span>–</span>{{ (i === 0 ? summary().soilInactive : summary().weatherInactive) | number }}</span>
       </div>
     </article>
   }

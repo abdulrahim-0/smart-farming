@@ -3,7 +3,7 @@
   <app-home-header />
   <main>
     <h1 class="sr-only">IoT Sensors</h1>
-    <app-sensor-overview [categories]="categories" />
+    <app-sensor-overview [categories]="categories" [summary]="summary()" />
     <app-sensor-equipment
       [categories]="categories"
       [sensors]="filtered()"

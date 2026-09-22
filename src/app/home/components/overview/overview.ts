@@ -1,8 +1,12 @@
+import { DecimalPipe } from '@angular/common';
+import { SensorSummary } from '../../sensor';
 import {
   afterNextRender,
   Component,
   DestroyRef,
   ElementRef,
+  effect,
+  signal,
   inject,
   input,
   viewChild,
@@ -15,12 +19,14 @@ use([PieChart, SVGRenderer]);
 
 @Component({
   selector: 'app-sensor-overview',
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './overview.html',
   styleUrls: ['../../home-shared.css', './overview.css'],
   styles: [':host { display: contents; }'],
 })
 export class SensorOverview {
+  readonly summary = input.required<SensorSummary>();
+  private readonly chart = signal<ReturnType<typeof init> | null>(null);
   readonly categories = input.required<string[]>();
   private readonly sensorChart = viewChild.required<ElementRef<HTMLDivElement>>('sensorChart');
   private readonly destroyRef = inject(DestroyRef);
@@ -32,22 +38,27 @@ export class SensorOverview {
         width: 117,
         height: 117,
       });
-      chart.setOption({
+      this.chart.set(chart);
+      this.destroyRef.onDestroy(() => chart.dispose());
+    });
+    effect(() => {
+      const summary = this.summary();
+      this.chart()?.setOption({
         series: [
           {
             type: 'pie',
             radius: ['60%', '95%'],
+            stillShowZeroSum: false,
             label: { show: false },
             labelLine: { show: false },
             emphasis: { scale: false, label: { show: false } },
             data: [
-              { value: 4592, name: 'Active', itemStyle: { color: '#4fb063' } },
-              { value: 240, name: 'Inactive', itemStyle: { color: '#3f4640' } },
+              { value: summary.active, name: 'Active', itemStyle: { color: '#4fb063' } },
+              { value: summary.inactive, name: 'Inactive', itemStyle: { color: '#3f4640' } },
             ],
           },
         ],
       });
-      this.destroyRef.onDestroy(() => chart.dispose());
     });
   }
 }

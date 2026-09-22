@@ -1,6 +1,6 @@
 import { Component, computed, signal, inject} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Sensor } from './sensor';
+import { Sensor, SensorSummary } from './sensor';
 import { HomeSidebar } from './components/sidebar/sidebar';
 import { HomeHeader } from './components/header/header';
 import { SensorOverview } from './components/overview/overview';
@@ -22,6 +22,7 @@ export class Home {
   constructor() {
     this.http.get('http://51.222.143.153:5065/sensors/list?metricsID=All&parkID=2&row=9&page=1&categorymetricsID=1&categorymetricsID=2&search=&fullData=true', { headers: this.headers }).subscribe({
     next: (response: any) => {
+      this.summary.set(response.summary);
       this.sensors.set(response.data.map((sensor: {
         sensorID: string;
         IMEI: string | null;
@@ -41,6 +42,11 @@ export class Home {
     }
   });
   }
+  protected readonly summary = signal<SensorSummary>({
+    total: 0, active: 0, inactive: 0,
+    soil: 0, soilActive: 0, soilInactive: 0,
+    weather: 0, weatherActive: 0, weatherInactive: 0,
+  });
   protected readonly query = signal('');
   protected readonly category = signal('All');
   protected readonly status = signal('All');

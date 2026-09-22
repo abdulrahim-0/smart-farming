@@ -1,3 +1,4 @@
+import { getInstanceByDom } from 'echarts/core';
 import { vi } from 'vitest';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -22,6 +23,11 @@ describe('Home interactions', () => {
       (request) => request.url.includes('/sensors/list'),
     ).flush({
       success: true,
+      summary: {
+        total: 2, active: 1, inactive: 1,
+        soil: 1, soilActive: 0, soilInactive: 1,
+        weather: 1, weatherActive: 1, weatherInactive: 0,
+      },
       data: [
         { sensorID: '24854', IMEI: null, name: 'DL-TRS12 LORAWAN', categorymetricsID: 1, isOn: false, status: '1' },
         { sensorID: '24803', IMEI: '12345', name: 'DL-SHT35 LORAWAN', categorymetricsID: 2, isOn: true, status: '1' },
@@ -31,10 +37,22 @@ describe('Home interactions', () => {
 
   it('filters sensors and opens and closes sensor details', async () => {
     const fixture = TestBed.createComponent(Home);
+    await fixture.whenStable();
     respondWithSensors();
     await fixture.whenStable();
     const page = fixture.nativeElement as HTMLElement;
     expect(page.querySelectorAll('.sensor-card').length).toBe(2);
+    expect(page.querySelector('.total-count')?.textContent).toBe('2');
+    expect(page.querySelector('.active-count strong')?.textContent).toBe('1');
+    expect(page.querySelector('.inactive-count strong')?.textContent).toBe('1');
+    expect(page.querySelector('.pie')?.getAttribute('aria-label')).toBe('1 active and 1 inactive sensors');
+    const chart = getInstanceByDom(page.querySelector<HTMLDivElement>('.pie')!)!;
+    expect(chart.getOption()['series']).toEqual([
+      expect.objectContaining({ data: [
+        expect.objectContaining({ name: 'Active', value: 1 }),
+        expect.objectContaining({ name: 'Inactive', value: 1 }),
+      ] }),
+    ]);
 
     page.querySelector<HTMLButtonElement>('.soil-tab')!.click();
     await fixture.whenStable();
