@@ -3,7 +3,7 @@
   grid-template-columns: 1.12fr 1fr 1fr;
   gap: 11px;
   padding: 25px;
-  background: #ffffff73;
+  background: rgba(255, 255, 255, 0.45);
   border-radius: 30px;
   height: 358px;
 }
