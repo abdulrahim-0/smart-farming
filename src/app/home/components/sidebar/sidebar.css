@@ -123,3 +123,8 @@ nav a {
   max-width: 100%;
   height: auto;
 }
+nav .dashboard-icon {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+}
